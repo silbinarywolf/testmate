@@ -16,4 +16,6 @@ testing.test('Link changes the class when hovered', () => {
 		<ButtonTwo label="Test"/>,
 		container
 	);
+	// DEBUG: Break test on purpose
+	// throw new Error("hey");
 });

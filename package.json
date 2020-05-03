@@ -9,7 +9,7 @@
 		"build-run-example": "yarn build && yarn --cwd packages/example test",
 		"build-watch-example": "yarn build && yarn --cwd packages/example testmate --watch",
 		"run-example": "yarn --cwd packages/example test",
-		"watch-example": "yarn --cwd packages/example testmate --watch"
+		"watch-example": "yarn --cwd packages/example testmate --v --watch"
 	},
 	"keywords": [
 		"unit",

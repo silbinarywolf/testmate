@@ -1,4 +1,10 @@
-let gFlags: CommandFlags | undefined;
+let isParsed: boolean = false;
+
+export const Flags: Readonly<CommandFlags> = {
+    isVerbose: false,
+    isHelp: false,
+    isWatchMode: false,
+}
 
 export interface CommandFlags {
     isVerbose: boolean;
@@ -6,16 +12,14 @@ export interface CommandFlags {
     isWatchMode: boolean;
 }
 
-// getArguments passed into command
-export function getArguments(): CommandFlags {
-  if (gFlags !== undefined) {
-    return gFlags;
+// CommandArgumentParse will parse all command line flags.
+export function CommandArgumentParse(): void {
+  if (isParsed === true) {
+    throw new Error("Cannot call CommandArgumentParse() more than once.")
   }
-  const flags: CommandFlags = {
-    isVerbose: false,
-    isHelp: false,
-    isWatchMode: false,
-  }
+  isParsed = true;
+
+  const flags: CommandFlags = Flags;
   var argList = process.argv.slice(2);
   if (argList.length > 0) {
     const firstCommand = argList[0];
@@ -40,6 +44,4 @@ export function getArguments(): CommandFlags {
       continue;
     }
   }
-  gFlags = flags;
-  return flags;
 }

@@ -435,7 +435,7 @@ window.testMateRuntime = (function(): runtime.Runtime {
 	}
 
 	function start() {
-		// NOTe(Jae): 2020-04-30
+		// NOTE(Jae): 2020-04-30
 		// This logic handles compilation errors if they occurred before first render. 
 		// This is for watch mode.
 		if ((window as any).testMateCompileError) {

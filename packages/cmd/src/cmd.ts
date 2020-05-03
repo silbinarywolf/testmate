@@ -9,13 +9,12 @@ import type { testing } from '@testmate/testing';
 
 import { DefaultTemplateHTML } from './template';
 import { getSession } from './session';
-import { CommandFlags, getArguments } from './command-arguments';
+import { Flags, CommandArgumentParse } from './command-arguments';
 
 const runtimePath = require.resolve('@testmate/runtime');
 
 const globalState: GlobalState = {
 	runtimeJS: '',
-	isWatchMode: false,
 	hasCompiledOnce: false,
 	lastCompileError: undefined,
 	currentTheme: undefined,
@@ -28,7 +27,6 @@ const globalState: GlobalState = {
 
 interface GlobalState {
 	runtimeJS: string;
-	isWatchMode: boolean;
 	hasCompiledOnce: boolean;
 	lastCompileError: Error | undefined;
 	currentTheme: ThemeConfig | undefined;
@@ -255,29 +253,40 @@ function onRequestFinishAllTests(req: http.IncomingMessage, res: http.ServerResp
 		hasAtLeastOneTest = true;
 		const testResult = session.testResult[name];
 		if (testResult.hasFailed) {
+			console.error(testResult.name, 'failed');
+			for (let log of testResult.logList) {
+				switch (log.type) {
+				case 'log':
+					console.log('-', ...log.args);
+					break;
+				case 'error':
+					console.error('-', ...log.args);
+					break;
+				}
+			}
 			hasFailed = true;
 		}
 	}
 	if (!hasAtLeastOneTest ||
 		hasFailed) {
-		console.log("Tests failed.")
+		console.error("FAIL");
 		res.writeHead(500, {'Content-Type': 'text/plain'});
 		res.write('FAIL');
 		res.end();
 
 		//
-		if (!globalState.isWatchMode) {
+		if (!Flags.isWatchMode) {
 			exit(ExitCode.FailedTest);
 		}
 		return;
 	}
-	console.log("Tests Passed.")
+	console.log("PASS");
 	res.writeHead(200, {'Content-Type': 'application/javascript'});
 	res.write('PASS');
 	res.end();
 
 	//
-	if (!globalState.isWatchMode) {
+	if (!Flags.isWatchMode) {
 		exit(ExitCode.Success);
 	}
 }
@@ -354,7 +363,9 @@ function onPostTestResultData(pathname: string, req: http.IncomingMessage, res: 
 		return;
 	}
 
-	console.log('receiving onPostTestResultData...', pathname);
+	if (Flags.isVerbose) {
+		console.log('receiving onPostTestResultData...', pathname);
+	}
 	let body = '';
 	req.on('data', chunk => {
 		body += chunk.toString(); // convert Buffer to string
@@ -467,44 +478,60 @@ function onRequest(req: http.IncomingMessage, res: http.ServerResponse) {
 				pathname = pathname.replace('/api/', '');
 				if (pathname.startsWith('testResult/')) {
 					pathname = pathname.replace('testResult/', '');
-					console.log('Receiving /testResult/ data:"'+pathname+'"');
+					if (Flags.isVerbose) {
+						console.log('Receiving /testResult/ data:"'+pathname+'"');
+					}
 					onPostTestResultData(pathname, req, res)
 					return;
 				}
 				if (pathname.startsWith('testResultAll/')) {
 					pathname = pathname.replace('testResultAll/', '');
-					console.log('[TODO: Handle this] Receiving /api/testResultAll/ data:"'+pathname+'"');
+					if (Flags.isVerbose) {
+						console.log('[TODO: Handle this] Receiving /api/testResultAll/ data:"'+pathname+'"');
+					}
 					onPostTestResultData(pathname, req, res)
 					//throw new Error("TODO: Handle get all results")
 					return;
 				}
 				// If nothing found, send 404.
-				console.log('API Request not found:"'+oldPathname+'"');
+				if (Flags.isVerbose) {
+					console.log('API Request not found:"'+oldPathname+'"');
+				}
 				handleNotFound(res);
 				return;
 			}
 			if (pathname.startsWith('/compiledTestData/')) {
 				pathname = pathname.replace('/compiledTestData/', '');
-				console.log('Serving /compiledTestData/ file:"'+pathname+'"');
+				if (Flags.isVerbose) {
+					console.log('Serving /compiledTestData/ file:"'+pathname+'"');
+				}
 				onRequestCompiledTestData(pathname, req, res)
 				return;
 			}
 			if (pathname.startsWith('/theme/')) {
 				pathname = pathname.replace('/theme/', '');
-				console.log('Serving /theme/ file:"'+pathname+'"');
+				if (Flags.isVerbose) {
+					console.log('Serving /theme/ file:"'+pathname+'"');
+				}
 				onRequestThemeAsset(pathname, req, res)
 				return
 			}
 			
 			// If nothing found, send 404.
-			console.log('Request not found:"'+pathname+'"');
+			if (Flags.isVerbose) {
+				console.log('Request not found:"'+pathname+'"');
+			}
 			handleNotFound(res);
 			return;
 		}
-		console.log('Serving request "'+pathname+'"');
+		if (Flags.isVerbose) {
+			console.log('Serving request "'+pathname+'"');
+		}
 		routeFn(req, res);
 	} catch (e) {
-		console.log('Error occurred serving:"'+pathname+'"');
+		if (Flags.isVerbose) {
+			console.log('Error occurred serving:"'+pathname+'"');
+		}
 		// If error occurs, send 500.
 		res.writeHead(500, {"Content-Type": "text/plain"});
 		res.end("Error: " + String(e));
@@ -536,7 +563,7 @@ async function onCompileHandler(res: preprocessor.CompileOutput | Error) {
 	// Reset error state
 	globalState.lastCompileError = undefined;
 	if (res instanceof Error) {
-		console.log("Error compiling: ", res);
+		console.error("Error compiling: ", res);
 		globalState.lastCompileError = res;
 		sendToAllClients(newErrorMessage(res));
 	} else {
@@ -624,7 +651,7 @@ async function start() {
 	globalState.server = http.createServer(onRequest)
 	globalState.server.listen(port);
 
-	if (globalState.isWatchMode) {
+	if (Flags.isWatchMode) {
 		// NOTE(Jae): 2020-05-03
 		// Disable Websockets for non-watch modes as we only really want to leverage
 		// this for telling the browser to refresh when a recompilation occurs
@@ -637,7 +664,7 @@ async function start() {
 	}
 
 	let url = 'http://localhost:'+port+'/#/';
-	if (!globalState.isWatchMode) {
+	if (!Flags.isWatchMode) {
 		url += '?runAllTests';
 	}
 
@@ -664,13 +691,12 @@ async function main(): Promise<void> {
 	}
 
 	// Load and parse command arguments
-	let args: CommandFlags;
 	try {
-		args = getArguments();
+		CommandArgumentParse();
 	} catch (e) {
 		throw e;
 	}
-	if (args.isHelp) {
+	if (Flags.isHelp) {
 		console.log(`Usage: testmate [command] [flags]
 
   Displays help information.
@@ -684,7 +710,6 @@ async function main(): Promise<void> {
 )`);
 		return;
 	}
-	globalState.isWatchMode = args.isWatchMode;
 	globalState.currentTheme = config.theme
 
 	// loadRuntime
@@ -723,17 +748,19 @@ async function main(): Promise<void> {
 	const options: preprocessor.Options = {
 		testFiles: testFiles,
 		onCompile: onCompileHandler,
-		isWatchMode: globalState.isWatchMode,
+		isWatchMode: Flags.isWatchMode,
 	}
 
 	// Run preprocessor first
 	if (!config.preprocessor) {
 		throw new Error("No \"preprocessor\" configured on testmate config file.");
 	}
-	if (options.isWatchMode) {
-		console.log("Starting preprocessor (watch mode)...");
-	} else {
-		console.log("Starting preprocessor...");
+	if (Flags.isVerbose) {
+		if (options.isWatchMode) {
+			console.log("Starting preprocessor (watch mode)...");
+		} else {
+			console.log("Starting preprocessor...");
+		}
 	}
 	config.preprocessor(options);
 	

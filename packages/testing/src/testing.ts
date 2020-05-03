@@ -186,16 +186,43 @@ export function testOnly(name: string, func: TestCallback): void {
 	test_internal(name, func, true);
 }
 
+// newErrorMessage will turn an Error object into a message that can
+// be sent to a browser and serialized with JSON.stringify.
+// Unfortunately JSON.stringify won't "just work" with a regular Error
+// object.
+function newErrorMessage(err: Error) {
+	const obj: {[key: string]: any} = {};
+	Object.getOwnPropertyNames(err).forEach(function (key) {
+		obj[key] = (err as any)[key];
+	}, err);
+	return {
+		type: 'error',
+		message: obj,
+	};
+}
+
+function normalizeLogArgs(args: any[]): any[] {
+	let argList: any[] = [];
+	for (let arg of args) {
+		if (arg instanceof Error) {
+			argList.push(newErrorMessage(arg));
+			continue;
+		}
+		argList.push(arg);
+	}
+	return argList;
+}
+
 // log records text in the error log. For tests, the text will be printed only if the test fails or the -v flag is set
 export function log<T>(...args: any[]): void {
 	if (currentTest === undefined) {
 		throw new Error("Unexpected error. \"log\" called outside of test context");
 	}
-	let error: Log = {
+	let log: Log = {
 		type: 'log',
-		args: args,
+		args: normalizeLogArgs(args),
 	}
-	currentTest.resultData.logList.push(error);
+	currentTest.resultData.logList.push(log);
 	console.log(...args, 'from test:', currentTest.name);
 }
 
@@ -220,11 +247,11 @@ export function error<T>(...args: any[]): void {
 	if (currentTest === undefined) {
 		throw new Error("Unexpected error. \"error\" called outside of test context");
 	}
-	let error: Log = {
+	let log: Log = {
 		type: 'error',
-		args: args,
+		args: normalizeLogArgs(args),
 	}
-	currentTest.resultData.logList.push(error);
+	currentTest.resultData.logList.push(log);
 	fail();
 	console.error(...args, 'from test:', currentTest.name);
 }
