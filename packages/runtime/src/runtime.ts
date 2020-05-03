@@ -326,9 +326,12 @@ window.testMateRuntime = (function(): runtime.Runtime {
 	}
 
 	function shouldRunAllTests(): boolean {
-		const urlParams = new URLSearchParams(window.location.search);
-		const v = urlParams.get('runAllTests');
-		return (v !== null);
+		const hrefAndParams = window.location.href.split('?');
+		if (hrefAndParams.length < 2) {
+			return false;
+		}
+		const urlParams = new URLSearchParams('?'+hrefAndParams[1]);
+		return (urlParams.get('runAllTests') !== null);
 	}
 
 	function getIFrame(): HTMLIFrameElement {
@@ -414,12 +417,21 @@ window.testMateRuntime = (function(): runtime.Runtime {
 		//socket.onopen = function(event) {
 		//socket.send("Here's some text that the server is urgently awaiting!"); 
 		//};
+		// TODO(Jae): 2020-05-03
+		// If "isWatchMode" flag is false, don't bother connecting.
 		socket = new WebSocket("ws://"+window.location.hostname+":"+String(self.websocketPort));
 		socket.onmessage = onWebsocketRecvMessage;
 	}
 
 	function getTestURL(testCase: preprocessor.TestOutput) {
-		return '#/test/' + testCase.inFile;
+		// Append current query params
+		let params = '';
+		const hrefAndParams = window.location.href.split('?');
+		if (hrefAndParams.length >= 2) {
+			params = '?'+hrefAndParams[1];
+		}
+
+		return '#/test/' + testCase.inFile + params;
 	}
 
 	function start() {
@@ -454,13 +466,24 @@ window.testMateRuntime = (function(): runtime.Runtime {
 		if (!route ||
 			route === '#' ||
 			route === '#/') {
-			if (shouldRunAllTests()) {
-				for (let testCase of options.testCases) {
-					window.location.href = getTestURL(testCase);
-					return;
-				}
+			console.warn('shouldRunAllTests', shouldRunAllTests());
+			if (!shouldRunAllTests()) {
+				currentTheme.onHomePage(options);
+				return;
 			}
-			currentTheme.onHomePage(options);
+			// If run all test cases
+			if (!options.testCases) {
+				console.error("Unexpected error. Cannot \"options.testCases.\"");
+				return;
+			}
+			if (options.testCases.length === 0) {
+				console.error("No test cases found. Cannot run all tests.");
+				return;
+			}
+			for (let testCase of options.testCases) {
+				window.location.href = getTestURL(testCase);
+				return;
+			}
 			return;
 		}
 		if (route.startsWith('#/test/')) {

@@ -589,7 +589,7 @@ function onWebsocketMessage(ws: WebSocket, message: WebSocket.Data) {
 }
 
 
-function exit(code: ExitCode) {
+async function exit(code: ExitCode) {
 	if (globalState.server) {
 		globalState.server.close();
 		globalState.server = undefined;
@@ -599,7 +599,8 @@ function exit(code: ExitCode) {
 		globalState.websocketServer = undefined;
 	}
 	if (globalState.browser) {
-		globalState.browser.kill();
+		await ChromeLauncher.killAll();
+		globalState.browser = undefined;
 	}
 	process.exitCode = code;
 	process.exit(code);
@@ -641,7 +642,11 @@ async function start() {
 	}
 
 	const chrome = await ChromeLauncher.launch({
-		startingUrl: url
+		startingUrl: url,
+		chromeFlags: [
+			//'--headless', 
+			'--disable-gpu'
+		],
 		//ignoreDefaultFlags: true,
 	});
 	globalState.browser = chrome;
