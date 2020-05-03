@@ -9,7 +9,7 @@
 	"license": "BSD-4-Clause",
 	"main": "lib/testeq.js",
 	"types": "lib/testeq.d.ts",
-	"sideEffects": true,
+	"sideEffects": false,
 	"devDependencies": {
 		"@testmate/testing": "0.0.0",
 		"typescript": "^3.8.0"
