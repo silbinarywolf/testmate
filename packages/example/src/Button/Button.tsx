@@ -33,7 +33,7 @@ export class Button extends React.Component<ButtonProps, State> {
 				className={[
 					ButtonStyle.button,
 					clicked ? ButtonStyle.clicked : undefined,
-				].join('a ')}
+				].join(' ')}
 				onClick={() => {
 					this.setState({
 						clicked: true,

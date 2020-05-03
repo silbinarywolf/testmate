@@ -141,6 +141,9 @@ window.testMateRuntime = (function(): runtime.Runtime {
 		if (assetCount !== 0) {
 			return;
 		}
+		if (assetCount < 0) {
+			throw new Error("Unexpected error. assetCount should not go lower than zero.");
+		}
 		// If all assets are loaded, then trigger tests
 		const iframeEl = getIFrame();
 		const iframeDoc = iframeEl.contentDocument;
@@ -385,7 +388,7 @@ window.testMateRuntime = (function(): runtime.Runtime {
 			// NOTE(Jae): 2020-04-25
 			// compiledTestData is used to detect routes for these
 			// files for the server.
-			asset = '/compiledTestData/' + asset;
+			asset = window.location.protocol+'//'+window.location.host+'/compiledTestData/' + asset;
 			if (asset.endsWith('.js')) {
 				assetCount++;
 				const scriptEL = document.createElement('script');
@@ -399,7 +402,7 @@ window.testMateRuntime = (function(): runtime.Runtime {
 				const styleEl = document.createElement('link');
 				styleEl.rel = "stylesheet";
 				styleEl.type = "text/css";
-				styleEl.media = "screen";
+				//styleEl.media = "screen";
 				styleEl.href = asset;
 				styleEl.onload = onAssetLoadHandler;
 				iframeHead.appendChild(styleEl);

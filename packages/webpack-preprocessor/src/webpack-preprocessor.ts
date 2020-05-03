@@ -139,12 +139,12 @@ export function preprocess(options: preprocessor.Options, webpackConfig: Webpack
 				options.onCompile(new Error('Unexpected error. Expected webpackConfig to have "entry" for: '+ entry));
 				return;
 			}
-			let assetList: string[] = [];
 			const entryPoint = entrypoints[entry];
 			if (entryPoint === undefined) {
 				options.onCompile(new Error('Unexpected error. Expected webpackConfig to have "entry" for: '+ entry));
 				return;
 			}
+			let assetList: string[] = [];
 			for (const asset of entryPoint.assets) {
 				assetList.push(path.join(webpackConfig.output.path, asset));
 			}
@@ -154,7 +154,7 @@ export function preprocess(options: preprocessor.Options, webpackConfig: Webpack
 			})
 		}
 
-		console.log('testFileOutput', testFileOutput);
+		//console.log('testFileOutput', testFileOutput);
 
 		// MAYBETODO(Jae):
 		// pass in "testFileOutput" incase more / less files

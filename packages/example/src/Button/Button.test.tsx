@@ -37,7 +37,7 @@ testing.test('Render a button', async () => {
 		throw new Error("Button element not found");
 	}
 	const styles = window.getComputedStyle(button);
-	testeq.expect(styles.backgroundColor, 'rgb(239, 239, 239)');
+	testeq.expect(styles.backgroundColor, 'rgb(51, 51, 51)');
 });
 
 
