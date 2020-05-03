@@ -1,0 +1,29 @@
+{
+	"name": "testmate",
+	"scripts": {
+		"build": "tsc"
+	},
+	"engines": {
+		"node": "^10.15.0"
+	},
+	"bin": {
+		"testmate": "bin/testmate"
+	},
+	"license": "BSD-4-Clause",
+	"types": "lib/cmd.d.ts",
+	"dependencies": {
+		"@testmate/default-theme": "0.0.0",
+		"@testmate/runtime": "0.0.0",
+		"@testmate/theme": "0.0.0",
+		"chrome-launcher": "^0.13.1",
+		"ws": "^7.2.5"
+	},
+	"devDependencies": {
+		"@testmate/testing": "0.0.0",
+		"@testmate/preprocessor": "0.0.0",
+		"@types/node": "^10.15.0",
+		"@types/ws": "^7.2.4",
+		"typescript": "^3.8.0"
+	},
+	"version": "0.0.0"
+}

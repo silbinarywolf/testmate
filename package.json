@@ -1,0 +1,34 @@
+{
+	"name": "testmate",
+	"private": true,
+	"version": "0.0.0",
+	"scripts": {
+		"buildCore": "yarn --cwd packages/preprocessor build && yarn --cwd packages/theme build && yarn --cwd packages/testing build && yarn --cwd packages/runtime build && yarn --cwd packages/cmd build",
+		"buildExtensions": "yarn --cwd packages/testdom build && yarn --cwd packages/webpack-preprocessor build && yarn --cwd packages/default-theme build",
+		"build": "yarn buildCore && yarn buildExtensions",
+		"build-run-example": "yarn build && yarn --cwd packages/example test",
+		"build-watch-example": "yarn build && yarn --cwd packages/example testmate --watch",
+		"run-example": "yarn --cwd packages/example test",
+		"watch-example": "yarn --cwd packages/example testmate --watch"
+	},
+	"keywords": [
+		"unit",
+		"component",
+		"browser",
+		"test",
+		"testing"
+	],
+	"homepage": "https://github.com/silbinarywolf/testmate",
+	"bugs": {
+		"url": "https://github.com/silbinarywolf/testmate/issues"
+	},
+	"engines": {
+		"node": "^10.15.0"
+	},
+	"license": "MIT",
+	"workspaces": {
+		"packages": [
+			"packages/*"
+		]
+	}
+}

@@ -1,0 +1,44 @@
+{
+	"name": "@testmate/example",
+	"scripts": {
+		"start": "webpack-dev-server",
+		"build": "webpack -p --config webpack.config.ts",
+		"test": "testmate"
+	},
+	"private": true,
+	"engines": {
+		"node": "^10.15.0"
+	},
+	"license": "BSD-4-Clause",
+	"devDependencies": {
+		"@types/node": "^12.7.2",
+		"@types/react": "^16.9.2",
+		"@types/react-dom": "^16.8.5",
+		"@testmate/webpack-preprocessor": "0.0.0",
+		"@testmate/testdom": "0.0.0",
+		"@testmate/testeq": "0.0.0",
+		"@testmate/testing": "0.0.0",
+		"clean-webpack-plugin": "^3.0.0",
+		"css-loader": "^3.2.0",
+		"css-modules-typescript-loader": "^2.0.4",
+		"cssnano": "^4.1.10",
+		"html-loader": "^0.5.5",
+		"html-webpack-plugin": "^3.2.0",
+		"identity-obj-proxy": "^3.0.0",
+		"mini-css-extract-plugin": "^0.8.0",
+		"postcss-import": "^12.0.1",
+		"postcss-loader": "^3.0.0",
+		"postcss-preset-env": "^6.7.0",
+		"react": "^16.9.0",
+		"react-dom": "^16.9.0",
+		"react-router-dom": "^5.1.2",
+		"react-test-renderer": "^16.10.2",
+		"ts-loader": "^6.0.4",
+		"tsconfig-paths-webpack-plugin": "^3.2.0",
+		"typescript": "^3.8.0",
+		"webpack": "^4.43.0",
+		"webpack-cli": "^3.3.11",
+		"webpack-dev-server": "^3.10.3"
+	},
+	"version": "0.0.0"
+}

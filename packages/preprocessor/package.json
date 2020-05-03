@@ -1,0 +1,17 @@
+{
+	"name": "@testmate/preprocessor",
+	"scripts": {
+		"build": "tsc"
+	},
+	"engines": {
+		"node": "^10.15.0"
+	},
+	"license": "BSD-4-Clause",
+	"main": "lib/preprocessor.js",
+	"types": "lib/preprocessor.d.ts",
+	"sideEffects": false,
+	"devDependencies": {
+		"typescript": "^3.8.0"
+	},
+	"version": "0.0.0"
+}

@@ -1,0 +1,18 @@
+{
+	"name": "@testmate/theme",
+	"scripts": {
+		"build": "tsc"
+	},
+	"engines": {
+		"node": "^10.15.0"
+	},
+	"license": "BSD-4-Clause",
+	"main": "lib/theme.js",
+	"types": "lib/theme.d.ts",
+	"sideEffects": false,
+	"devDependencies": {
+		"typescript": "^3.8.0",
+		"@testmate/preprocessor": "0.0.0"
+	},
+	"version": "0.0.0"
+}

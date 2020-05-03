@@ -1,0 +1,17 @@
+{
+	"name": "@testmate/testing",
+	"scripts": {
+		"build": "tsc"
+	},
+	"engines": {
+		"node": "^10.15.0"
+	},
+	"license": "BSD-4-Clause",
+	"main": "lib/testing.js",
+	"types": "lib/testing.d.ts",
+	"sideEffects": true,
+	"devDependencies": {
+		"typescript": "^3.8.0"
+	},
+	"version": "0.0.0"
+}
