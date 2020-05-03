@@ -57,7 +57,7 @@ export async function type(el: TypeableElement, text: string): Promise<void> {
 	await donePromise;
 }
 
-export function click(el: Element | null | undefined): Promise<void> {
+export function click(el: Element | null | undefined): void {
 	if (el === null ||
 		el === undefined) {
 		throw new Error("Cannot call \"click\" on a null or undefined value.");
