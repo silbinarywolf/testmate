@@ -4,6 +4,8 @@
 
 *WARNING: This is not ready for personal/production testing or use. This is an experimental project for the time-being. The name will likely change due to being already taken on the NPM registry.*
 
+![Picture of test running](https://user-images.githubusercontent.com/3859574/80910954-811c6300-8d76-11ea-9f38-473b8db62245.png)
+
 ## Introduction
 
 A test-runner with first-class support for TypeScript that strives to work with your monolithic codebase. Your code just runs in a browser and can be interacted with rapidly by leveraging your compilers "watch" functionality.
