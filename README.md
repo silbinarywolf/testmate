@@ -1,5 +1,7 @@
 # TestMate
 
+[![Build Status](https://travis-ci.org/silbinarywolf/testmate.svg?branch=master)](https://travis-ci.org/silbinarywolf/testmate)
+
 *WARNING: This is not ready for personal/production testing or use. This is an experimental project for the time-being. The name will likely change due to being already taken on the NPM registry.*
 
 ## Introduction
