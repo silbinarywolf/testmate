@@ -1,0 +1,20 @@
+{
+	"name": "@testmate/runtime",
+	"scripts": {
+		"build": "tsc"
+	},
+	"engines": {
+		"node": "^10.15.0"
+	},
+	"main": "lib/runtime.js",
+	"license": "BSD-4-Clause",
+	"types": "./lib/runtime.d.ts",
+	"sideEffects": true,
+	"devDependencies": {
+		"typescript": "^3.8.0",
+		"@testmate/theme": "0.0.0",
+		"@testmate/testing": "0.0.0",
+		"@testmate/preprocessor": "0.0.0"
+	},
+	"version": "0.0.0"
+}

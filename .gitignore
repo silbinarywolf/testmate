@@ -1,0 +1,8 @@
+/dist
+/node_modules
+/packages/**/lib
+/packages/**/dist
+/packages/**/node_modules
+/*.txt
+/.pnp.js
+/.pnp

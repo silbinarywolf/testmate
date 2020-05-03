@@ -1,0 +1,97 @@
+.root {
+	display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.sidebar {
+	width: 620px;
+	height: 100%;
+	padding: 0 16px;
+	border-right: 1px solid black;
+}
+
+.content {
+	width: calc(100% - 620px);
+	height: 100%;
+	background: #fff;
+}
+
+.link {
+	color: blue;
+	text-decoration: underline;
+}
+
+.testList {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.testListItem {
+	margin-bottom: 8px;
+}
+
+.testTitle {
+	font-size: 16px;
+	font-weight: normal;
+}
+
+.testTitleText {
+	margin-left: 8px;
+}
+
+.testError {
+	background: #000;
+	color: #fff;
+	padding: 16px;
+}
+
+.tag {
+	display: inline-block;
+	padding: 8px;
+	margin-right: 8px;
+	background-color: grey;
+	font-weight: bold;
+	color: black;
+	text-transform: uppercase;
+}
+
+.tagWaiting {
+	background-color: #ffff40;
+}
+
+.tagRunning {
+	background-color: #ffff40;
+}
+
+.tagPass {
+	background-color: #40ff40;
+}
+
+.tagError,
+.tagFail {
+	background-color: #ff4040;
+}
+
+.tagSkip {
+	background-color: blue;
+}
+
+@media only screen and (max-width: 620px) {
+	.main {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.sidebar {
+		width: 100%;
+		height: auto;
+	}
+
+	.content {
+		width: 100%;
+		height: auto;
+	}
+}

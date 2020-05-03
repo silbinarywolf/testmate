@@ -1,0 +1,21 @@
+{
+	"name": "@testmate/webpack-preprocessor",
+	"scripts": {
+		"build": "yarn tsc"
+	},
+	"engines": {
+		"node": "^10.15.0"
+	},
+	"main": "lib/webpack-preprocessor.js",
+	"license": "BSD-4-Clause",
+	"types": "lib/webpack-preprocessor.d.ts",
+	"sideEffects": false,
+  "dependencies": {
+    "@testmate/preprocessor": "0.0.0",
+    "webpack": "^4.43.0"
+  },
+	"devDependencies": {
+		"typescript": "^3.8.0"
+	},
+	"version": "0.0.0"
+}

@@ -1,0 +1,34 @@
+# Based off of https://github.com/cypress-io/cypress-example-todomvc/blob/master/.travis.yml
+language: node_js
+
+node_js:
+  # Support 10.15.0 and up, as that is what we use
+  - 10.15.0
+
+addons:
+  chrome: stable
+
+services:
+  - xvfb
+
+# Cache NPM folder
+cache:
+  directories:
+    - ~/.npm
+
+install:
+  - yarn install
+
+before_script:
+  - export DISPLAY=:99.0
+
+script:
+  - yarn build
+  - yarn run-example
+
+#after_success:
+#  - npm run-script semantic-release
+
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "strict": true,
+	"strictFunctionTypes": true,
+	"strictPropertyInitialization": true,
+	"pretty": true,
+	"sourceMap": true,
+	"target": "es5",
+	"module": "esnext",
+	"moduleResolution": "node",
+	"strictNullChecks": true,
+	"declaration": true,
+	"allowSyntheticDefaultImports": true,
+	"esModuleInterop": true
+  },
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,9 @@
+.root {
+	color: #fff;
+	background: #000;
+}
+
+.link {
+	color: blue;
+	text-decoration: underline;
+}
