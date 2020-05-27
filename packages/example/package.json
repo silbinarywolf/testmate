@@ -2,7 +2,7 @@
 	"name": "@testmate/example",
 	"scripts": {
 		"start": "webpack-dev-server",
-		"build": "webpack -p --config webpack.config.ts",
+		"build": "webpack -p --config webpack.config.js",
 		"test": "testmate"
 	},
 	"private": true,

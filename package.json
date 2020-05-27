@@ -5,7 +5,7 @@
 	"scripts": {
 		"buildCore": "yarn --cwd packages/preprocessor build && yarn --cwd packages/theme build && yarn --cwd packages/testing build && yarn --cwd packages/runtime build && yarn --cwd packages/cmd build",
 		"buildExtensions": "yarn --cwd packages/testdom build && yarn --cwd packages/testeq build && yarn --cwd packages/webpack-preprocessor build && yarn --cwd packages/default-theme build",
-		"build": "yarn buildCore && yarn buildExtensions",
+		"build": "yarn lerna run build",
 		"build-run-example": "yarn build && yarn --cwd packages/example test",
 		"build-watch-example": "yarn build && yarn --cwd packages/example testmate --watch",
 		"run-example": "yarn --cwd packages/example test",
@@ -30,5 +30,8 @@
 		"packages": [
 			"packages/*"
 		]
+	},
+	"devDependencies": {
+		"lerna": "^3.22.0"
 	}
 }
